@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile-app
+    volumes:
+      - "./:/usr/app/src"
+    ports:
+      - "3000:3000"
+    command: sh -c "cd next_prototype && yarn dev"
+  pg-data:
+    build:
+      context: .
+      dockerfile: dockerfile-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_DB: test
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - "./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+      - "./pg-data:/var/lib/postgresql/data"
+    # volumes:
+    ports:
+      - "5500:5432"
